@@ -9,8 +9,13 @@
     $set_name   = $_GET["set_name"];
     $img_list = glob("$assets/sets/$set_name/*.jpg");
     
-    foreach ($img_list as $id => $img) {
-      $html.= '<img id="photo" src="'.$img.'" alt="">';
+    foreach ($img_list as $id => $img){
+      $img_selectionFile = $img.".md";
+      $id = basename($img, ".jpg");
+      
+      if(file_exists($img_selectionFile)) $hasdata[$id] = "hasdata";
+      
+      $html.= '<img id="'.$id.'" class="photo '.$hasdata[$id].'" src="'.$img.'" alt="">';
     }
   }
 ?>
@@ -21,8 +26,7 @@
     <link rel="stylesheet" href="lib/bootstrap-3.1.1-dist/css/bootstrap-theme.min.css">
     <link rel="stylesheet" href="lib/bootstrap-3.1.1-dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="css/screen.css">
-    <link rel="stylesheet" href="lib/jquery.imgareaselect-0.9.10/css/imgareaselect-default.css">
-    
+    <link rel="stylesheet" href="lib/jquery.imgareaselect-0.9.10/css/imgareaselect-custom.css">    
   </head>
   <body>
 

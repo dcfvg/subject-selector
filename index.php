@@ -19,16 +19,27 @@
       
     break;
     case 'edit':
-      $set_name   = $_GET["set_name"];
+      $set_name = $_GET["set_name"];
       $img_list = glob("$assets/sets/$set_name/*.jpg");
       $active["edit"] = "active";
 
       foreach ($img_list as $id => $img){
         $img_selectionFile = $img.".md";
         $id = basename($img, ".jpg");
-
+        $img_exif = exif_select($img.".meta");
+        
         if(file_exists($img_selectionFile)) $hasdata[$id] = "hasdata";
-        $html.= '<p><img id="'.$id.'" class="photo '.$hasdata[$id].'" src="'.$img.'" alt=""></p>';
+              
+        $html.= 
+        '<div class="row">
+        <p class="col-md-9"><img id="'.$id.'" class="photo '.$hasdata[$id].'" src="'.$img.'" alt=""></p>'.
+        '<h4 class="col-md-3">'.$img_exif["headline"].'</h4>'.
+        '<h6 class="col-md-3">'.$img_exif["object"].'</h6>'.
+        '<h6 class="col-md-3">'.$img_exif["by-line"].'</h6>'.
+        
+        '<p class="col-md-3">'.$img_exif["caption-abstract"].'</p>'.
+        '</div>'
+        ;
       }
       $html = "<div>$html</div>";
     break;
@@ -43,9 +54,9 @@
         $img_selectionFile = $img.".md";
         $id = basename($img, ".jpg");
         $img_selection = unserialize (file_get_contents($img_selectionFile));
+ 
         
         if(file_exists($img_selectionFile)) $hasdata[$id] = "hasdata";
-       
         $img_sizes[$img_selection["height"]][]   = '<div id="'.$id.'" class="part" style="
               background:url('.$img.');
               background-position:-'.$img_selection["x1"].'px -'.$img_selection["y1"].'px;

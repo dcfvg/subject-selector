@@ -8,4 +8,20 @@
     }
     return '<p class="lead">choose a set</p><div class="list-group">'.$sets_list.'</div>'; 
   }
+  function exif_select($exiffile){
+    $exif = file_get_contents($exiffile);
+    $lines  = explode("\n",$exif);
+    
+    foreach ($lines as $id => $line) {
+      $lines[$id] = explode(": ",$line);
+
+      $v = $lines[$id][0];
+      $e = $lines[$id][1];
+      if (stripos($v,"eadline")) $fields["headline"] = $e;
+      if (stripos($v,"y-line")) $fields["by-line"] = $e;
+      if (stripos($v,"bject")) $fields["object"] = $e;
+      if (stripos($v,"abstract")) $fields["caption-abstract"] = $e;
+    }
+   return $fields;
+  }
 ?>

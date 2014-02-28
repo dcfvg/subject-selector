@@ -36,22 +36,28 @@
       $set_name   = $_GET["set_name"];
       $img_list = glob("$assets/sets/$set_name/*.jpg");
       $active["parts"] = "active";
-
+      
+      // sort by height
       foreach ($img_list as $id => $img){
+        
         $img_selectionFile = $img.".md";
         $id = basename($img, ".jpg");
         $img_selection = unserialize (file_get_contents($img_selectionFile));
         
         if(file_exists($img_selectionFile)) $hasdata[$id] = "hasdata";
-        $html.= '<div id="'.$id.'" class="part" style="
-            background:url('.$img.');
-            background-position:-'.$img_selection["x1"].'px -'.$img_selection["y1"].'px;
-            width:'.$img_selection["width"].'px;
-            height:'.$img_selection["height"].'px;
-        " ></div>';
+       
+        $img_sizes[$img_selection["height"]][]   = '<div id="'.$id.'" class="part" style="
+              background:url('.$img.');
+              background-position:-'.$img_selection["x1"].'px -'.$img_selection["y1"].'px;
+              width:'.$img_selection["width"].'px;
+              height:'.$img_selection["height"].'px;
+          " ></div>';
       }
-      $html = '<div id="pack" class="js-packery"
-        data-packery-options=\'{ "itemSelector": ".part", "gutter": 10 }\' >'.$html.'</div>';
+      ksort($img_sizes);
+      
+      // display
+      foreach ($img_sizes as $size => $imgs) foreach ($imgs as $id => $img_html) $html .= $img_html; 
+      $html = '<div id="pack" class="js-packery" data-packery-options=\'{ "itemSelector": ".part", "gutter": 10 }\' >'.$html.'</div>';
     break;
     case 'heatmap':
       $set_name   = $_GET["set_name"];

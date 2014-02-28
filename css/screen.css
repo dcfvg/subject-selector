@@ -1,0 +1,23 @@
+#heatmapContainer {
+  width: 900px;
+  height: 800px;
+}
+#heatmapArea {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+.crop {
+  position: absolute;
+  opacity: 0.2;
+  margin: 0;
+  padding: 0;
+  background-color: red;
+  border: 2px red solid;
+}
+.crop:hover {
+  opacity: 1;
+}
+#cropContainer {
+  position: relative;
+}

@@ -80,11 +80,12 @@
         $id = basename($img, ".jpg");
         $img_selection = unserialize (file_get_contents($img_selectionFile));
         
-        $x = $img_selection["x2"]-$img_selection["x1"];
-        $y = $img_selection["y2"]-$img_selection["y1"];
+
+        $x = $img_selection["x1"]+($img_selection["width"]/2);
+        $y = $img_selection["y1"]+($img_selection["height"]/2);
         $count = 1; //$img_selection["width"]*$img_selection["height"];
         $max = 5;// max($count, $max);
-        
+                unset($img_selection);
         if(file_exists($img_selectionFile)) $hasdata[$id] = "hasdata";
         $data .= '{ x: '.$x.', y: '.$y.', count: '.$count.'},';
       }
@@ -182,7 +183,7 @@
             </div>
           </div>
     </div>
-    <div class="container">
+    <div class="container-fluid">
       <p class="lead"><?php echo $set_name ?></p>
       <?php echo $nav_html; ?>
       <?php echo $sets_list;?>
